@@ -82,8 +82,11 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(Loader<ArrayList<EarthQuake>> loader, ArrayList<EarthQuake> data) {
         Log.i(TAG, "onLoadFinished: ");
-        adapter.addAll(data);
-        adapter.notifyDataSetChanged();
+        adapter.clear();
+        if(data!=null && !data.isEmpty()){
+            adapter.addAll(data);
+        }
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
