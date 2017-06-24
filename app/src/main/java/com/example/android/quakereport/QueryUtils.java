@@ -74,7 +74,7 @@ public class QueryUtils {
                 dateObject = new Date(time);
                 earthquakes.add(new EarthQuake(mag, place, time,url));
             }
-            Log.i(TAG, "extractEarthquakes: size=>" + earthquakes.size());
+            Log.i(TAG, "extractEarthquakes: items->" + earthquakes.size());
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
