@@ -13,8 +13,11 @@ public class EarthquakeLoader extends android.support.v4.content.AsyncTaskLoader
 
     public static final String TAG = EarthquakeLoader.class.getName();
 
-    public EarthquakeLoader(Context context) {
+    private String url;
+
+    public EarthquakeLoader(Context context, String url) {
         super(context);
+        this.url = url;
         Log.i(TAG, "EarthquakeLoader: ");
     }
 
@@ -26,7 +29,7 @@ public class EarthquakeLoader extends android.support.v4.content.AsyncTaskLoader
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return QueryUtils.extractEarthquakes();
+        return QueryUtils.extractEarthquakes(url);
 //        return null;
     }
 
