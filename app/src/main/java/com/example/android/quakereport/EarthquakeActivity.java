@@ -19,17 +19,20 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<EarthQuake>>{
 
+
+    public static final String TAG = EarthquakeActivity.class.getName();
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     ListView earthquakeListView;
@@ -64,10 +67,32 @@ public class EarthquakeActivity extends AppCompatActivity {
                 startActivity(webIntent);
             }
         });
-        EarthquakeAsyncTask task = new EarthquakeAsyncTask();
-        task.execute();
+        //EarthquakeAsyncTask task = new EarthquakeAsyncTask();
+        //task.execute();
+        getSupportLoaderManager().initLoader(0,null,this).forceLoad();
+
     }
 
+    @Override
+    public Loader<ArrayList<EarthQuake>> onCreateLoader(int id, Bundle args) {
+        Log.i(TAG, "onCreateLoader: ");
+        return new EarthquakeLoader(EarthquakeActivity.this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<ArrayList<EarthQuake>> loader, ArrayList<EarthQuake> data) {
+        Log.i(TAG, "onLoadFinished: ");
+        adapter.addAll(data);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<ArrayList<EarthQuake>> loader) {
+        adapter.addAll(new ArrayList<EarthQuake>());
+    }
+
+
+    @Deprecated
     private class EarthquakeAsyncTask extends AsyncTask<String, Void, ArrayList<EarthQuake>> {
 
         @Override
@@ -84,4 +109,5 @@ public class EarthquakeActivity extends AppCompatActivity {
 //            earthquakeListView.setAdapter(adapter);
         }
     }
+
 }
