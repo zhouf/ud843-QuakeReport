@@ -27,5 +27,11 @@ public class EarthquakeLoader extends android.support.v4.content.AsyncTaskLoader
             e.printStackTrace();
         }
         return QueryUtils.extractEarthquakes();
+//        return null;
+    }
+
+    @Override
+    protected void onStartLoading() {
+        forceLoad();
     }
 }

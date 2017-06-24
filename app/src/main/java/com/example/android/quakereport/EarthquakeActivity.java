@@ -15,7 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,6 +39,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     public static final String TAG = EarthquakeActivity.class.getName();
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+    private static final int EARTHQUAKE_LOADER_ID = 1;
 
     ListView earthquakeListView;
     EarthQuakeAdapter adapter;
@@ -56,33 +60,49 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         emptyView = (TextView) findViewById(R.id.empty_view);
+        emptyView.setVisibility(View.GONE);
         earthquakeListView.setEmptyView(emptyView);
-        // Create a new {@link ArrayAdapter} of earthquakes
+
+
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        Log.i(TAG, "onCreate: isConnected=>" + isConnected);
+        if(isConnected){
+
+            // Create a new {@link ArrayAdapter} of earthquakes
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>( this, android.R.layout.simple_list_item_1, earthquakes);
 
 //        EarthQuakeAdapter adapter = new EarthQuakeAdapter(this,earthquakes);
-        adapter = new EarthQuakeAdapter(this,earthquakes);
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
-        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EarthQuake earthQuake = (EarthQuake) parent.getItemAtPosition(position);
+            adapter = new EarthQuakeAdapter(this,earthquakes);
+            // Set the adapter on the {@link ListView}
+            // so the list can be populated in the user interface
+            earthquakeListView.setAdapter(adapter);
+            earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    EarthQuake earthQuake = (EarthQuake) parent.getItemAtPosition(position);
 
-                Intent webIntent = new Intent(Intent.ACTION_VIEW,Uri.parse(earthQuake.getUrl()));
-                startActivity(webIntent);
-            }
-        });
-        //EarthquakeAsyncTask task = new EarthquakeAsyncTask();
-        //task.execute();
-        getSupportLoaderManager().initLoader(0,null,this).forceLoad();
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW,Uri.parse(earthQuake.getUrl()));
+                    startActivity(webIntent);
+                }
+            });
+            //EarthquakeAsyncTask task = new EarthquakeAsyncTask();
+            //task.execute();
+            getSupportLoaderManager().initLoader(EARTHQUAKE_LOADER_ID,null,this);
+        }else{
+            progressBar.setVisibility(View.GONE);
+            emptyView.setText(R.string.not_connected);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+
 
     }
 
     @Override
     public Loader<ArrayList<EarthQuake>> onCreateLoader(int id, Bundle args) {
-        Log.i(TAG, "onCreateLoader: ");
+        Log.i(TAG, "onCreateLoader: " + id);
         return new EarthquakeLoader(EarthquakeActivity.this);
     }
 
@@ -93,6 +113,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         if(data!=null && !data.isEmpty()){
             adapter.clear();
             adapter.addAll(data);
+        }else{
+            emptyView.setText(R.string.empty_tip);
+            emptyView.setVisibility(View.VISIBLE);
         }
 //        adapter.notifyDataSetChanged();
     }
