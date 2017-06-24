@@ -21,6 +21,11 @@ public class EarthquakeLoader extends android.support.v4.content.AsyncTaskLoader
     @Override
     public ArrayList<EarthQuake> loadInBackground() {
         Log.i(TAG, "loadInBackground: ");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return QueryUtils.extractEarthquakes();
     }
 }

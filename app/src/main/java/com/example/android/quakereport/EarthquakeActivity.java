@@ -26,6 +26,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     ListView earthquakeListView;
     EarthQuakeAdapter adapter;
+    TextView emptyView;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // Find a reference to the {@link ListView} in the layout
 //        ListView earthquakeListView = (ListView) findViewById(R.id.list);
         earthquakeListView = (ListView) findViewById(R.id.list);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        emptyView = (TextView) findViewById(R.id.empty_view);
+        earthquakeListView.setEmptyView(emptyView);
         // Create a new {@link ArrayAdapter} of earthquakes
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>( this, android.R.layout.simple_list_item_1, earthquakes);
 
@@ -82,8 +89,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(Loader<ArrayList<EarthQuake>> loader, ArrayList<EarthQuake> data) {
         Log.i(TAG, "onLoadFinished: ");
-        adapter.clear();
+        progressBar.setVisibility(View.GONE);
         if(data!=null && !data.isEmpty()){
+            adapter.clear();
             adapter.addAll(data);
         }
 //        adapter.notifyDataSetChanged();
