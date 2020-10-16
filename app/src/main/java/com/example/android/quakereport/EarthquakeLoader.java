@@ -3,13 +3,15 @@ package com.example.android.quakereport;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.loader.content.AsyncTaskLoader;
+
 import java.util.ArrayList;
 
 /**
  * Created by Lenovo on 2017-6-24.
  */
 
-public class EarthquakeLoader extends android.support.v4.content.AsyncTaskLoader<ArrayList<EarthQuake>> {
+public class EarthquakeLoader extends AsyncTaskLoader<ArrayList<EarthQuake>> {
 
     public static final String TAG = EarthquakeLoader.class.getName();
 
