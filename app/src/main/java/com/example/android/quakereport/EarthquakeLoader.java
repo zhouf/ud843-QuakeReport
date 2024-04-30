@@ -32,7 +32,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<ArrayList<EarthQuake>> {
             e.printStackTrace();
         }
         return QueryUtils.extractEarthquakes(url);
-//        return null;
+        // return DataUtil.getData();  //for test
     }
 
     @Override
