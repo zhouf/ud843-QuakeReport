@@ -61,10 +61,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         // Find a reference to the {@link ListView} in the layout
 //        ListView earthquakeListView = (ListView) findViewById(R.id.list);
-        earthquakeListView = (ListView) findViewById(R.id.list);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        earthquakeListView = findViewById(R.id.list);
+        progressBar = findViewById(R.id.progressBar);
 
-        emptyView = (TextView) findViewById(R.id.empty_view);
+        emptyView = findViewById(R.id.empty_view);
         emptyView.setVisibility(View.GONE);
         earthquakeListView.setEmptyView(emptyView);
 
