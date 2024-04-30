@@ -95,7 +95,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             });
             //EarthquakeAsyncTask task = new EarthquakeAsyncTask();
             //task.execute();
-            getSupportLoaderManager().initLoader(EARTHQUAKE_LOADER_ID,null,this);
+            // getSupportLoaderManager().initLoader(EARTHQUAKE_LOADER_ID,null,this);
+            LoaderManager.getInstance(this).initLoader(EARTHQUAKE_LOADER_ID,null,this);
         }else{
             progressBar.setVisibility(View.GONE);
             emptyView.setText(R.string.not_connected);
@@ -137,7 +138,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         uriBuilder.appendQueryParameter("format", "geojson");
-        uriBuilder.appendQueryParameter("limit", "10");
+        uriBuilder.appendQueryParameter("limit", "30");
         uriBuilder.appendQueryParameter("minmag", minMagnitude);
         uriBuilder.appendQueryParameter("orderby", orderBy);
 
